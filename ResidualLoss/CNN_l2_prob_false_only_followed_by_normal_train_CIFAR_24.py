@@ -10,9 +10,11 @@ import torch.nn.functional as F
 import torch
 from torch.utils.data import DataLoader, WeightedRandomSampler
 
-from ResidualLoss.dataset import cifar10_data_loader_test, cifar10_data_loader_train, cifar10_dataset_train
-from ResidualLoss.model import CIFAR_24
+from dataset import cifar10_data_loader_test, cifar10_data_loader_train, cifar10_dataset_train
+from model import CIFAR_24
 
+
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 class Logger(object):
     def __init__(self):
@@ -47,7 +49,7 @@ batch_size = 100
 evaluation_batch_size = 100
 learning_rate = 0.0001
 
-model = CIFAR_24().cuda()
+model = CIFAR_24().to(device)
 
 optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
 
@@ -78,7 +80,7 @@ def residual_train():
 
         with torch.no_grad():
             for data, target in evaluation_data_loader:
-                data, target = data.cuda(), target.cuda()
+                data, target = data.to(device), target.to(device)
                 output = model(data)
 
                 pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
@@ -87,7 +89,7 @@ def residual_train():
         model.train()
         total_train_loss = 0
         for data, target in train_data_loader:
-            data, target = data.cuda(), target.cuda()
+            data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
 
             output = model(data)
@@ -115,7 +117,7 @@ def residual_train():
 
         with torch.no_grad():
             for data, target in evaluation_data_loader:
-                data, target = data.cuda(), target.cuda()
+                data, target = data.to(device), target.to(device)
                 output = model(data)
 
                 pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
@@ -124,7 +126,7 @@ def residual_train():
         model.train()
         total_train_loss = 0
         for data, target in train_data_loader:
-            data, target = data.cuda(), target.cuda()
+            data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
 
             output = model(data)
