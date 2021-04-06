@@ -10,8 +10,8 @@ import torch.nn.functional as F
 import torch
 from torch.utils.data import DataLoader, WeightedRandomSampler
 
-from ResidualLoss.dataset import cifar10_data_loader_test, cifar10_data_loader_train, cifar10_dataset_train
-from ResidualLoss.model import CIFAR_17
+from dataset import cifar10_data_loader_test, cifar10_data_loader_train, cifar10_dataset_train
+from model import CIFAR_17
 
 
 class Logger(object):
