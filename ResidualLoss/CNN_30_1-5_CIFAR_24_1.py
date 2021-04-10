@@ -11,7 +11,7 @@ import torch
 from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from dataset import cifar10_data_loader_test, cifar10_data_loader_train, cifar10_dataset_train
-from model import CIFAR_17_2
+from model import CIFAR_24_1
 
 
 class Logger(object):
@@ -41,12 +41,12 @@ def setup_seed(seed):
     cudnn.deterministic = True
 
 
-setup_seed(1914 * 6)
+setup_seed(1914 * 1)
 num_epochs = 4000
 batch_size = 100
 learning_rate = 0.0001
 
-model = CIFAR_17_2().cuda()
+model = CIFAR_24_1().cuda()
 model.train()
 
 optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-5)
@@ -111,10 +111,10 @@ def test():
 
 
 if __name__ == '__main__':
-    for iter in range(6, 11):
+    for iter in range(1, 6):
         print(iter)
-        model.load_state_dict(CIFAR_17_2().cuda().state_dict())
+        model.load_state_dict(CIFAR_24_1().cuda().state_dict())
         residual_train()
-        loc = "./CNN-30/CIFAR_17_2-iter-%s.pt" % iter
+        loc = "./CNN-30/CIFAR_24_1-iter-%s.pt" % iter
         torch.save(model.state_dict(), loc)
         print(iter)
